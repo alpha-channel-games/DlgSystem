@@ -33,7 +33,7 @@
 		{
 			"Name": "DlgSystemEditor",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "Default", // HEAT: Fix loading phase
+			"LoadingPhase": "Default",
 			"WhitelistPlatforms": ["Win64", "Linux", "Mac"]
 		}
 	]
