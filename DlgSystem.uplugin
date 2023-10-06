@@ -2,7 +2,6 @@
 	"FileVersion": 3,
 	"Version": 17,
 	"VersionName": "17.0.0",
-	"EngineVersion" : "ANY_VERSION",
 	"FriendlyName": "Not Yet: Dialogue System",
 	"Description": "Dialogue system (with text based dialogues) and nice Editor for editing dialogues",
 	"Category": "Misc",
@@ -27,13 +26,14 @@
 				"Mac",
 				"Android",
 				"IOS",
-				"TVOS"
+				"TVOS",
+				"PS5"
 			]
 		},
 		{
 			"Name": "DlgSystemEditor",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "PreDefault",
+			"LoadingPhase": "Default", // HEAT: Fix loading phase
 			"WhitelistPlatforms": ["Win64", "Linux", "Mac"]
 		}
 	]
