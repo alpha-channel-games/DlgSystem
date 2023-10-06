@@ -39,7 +39,7 @@ struct NodeWithParentPosition
 void FDlgEditorUtilities::LoadAllDialoguesAndCheckGUIDs()
 {
 	//const int32 NumDialoguesBefore = UDlgManager::GetAllDialoguesFromMemory().Num();
-	const int32 NumLoadedDialogues = UDlgManager::LoadAllDialoguesIntoMemory(false);
+	const int32 NumLoadedDialogues = UDlgManager::LoadAllDialoguesIntoMemory(true); // HEAT: Enable async by default
 	//const int32 NumDialoguesAfter = UDlgManager::GetAllDialoguesFromMemory().Num();
 	//check(NumDialoguesBefore == NumDialoguesAfter);
 	UE_LOG(LogDlgSystemEditor, Log, TEXT("UDlgManager::LoadAllDialoguesIntoMemory loaded %d Dialogues into Memory"), NumLoadedDialogues);
