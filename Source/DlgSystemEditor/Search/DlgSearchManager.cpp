@@ -1206,8 +1206,13 @@ void FDlgSearchManager::HandleOnAssetAdded(const FAssetData& InAssetData)
 		return;
 	}
 
+	// HEAT: Fix null class assets
+	if (InAssetData.GetClass() == nullptr)
+		return;
+
+	// HEAT: Fix null class assets
 	// Ignore other assets
-	if (!InAssetData.GetClass() || !InAssetData.GetClass()->IsChildOf<UDlgDialogue>())
+	if (!InAssetData.GetClass()->IsChildOf<UDlgDialogue>())
 	{
 		return;
 	}

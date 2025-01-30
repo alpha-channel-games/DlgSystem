@@ -99,8 +99,17 @@ public:
 	// Sets the RawNodeText of the Node and rebuilds the constructed text
 	virtual void SetNodeText(const FText& InText)
 	{
-		Text = InText;
+		// HEAT: Add SetUnformattedNodeText() to avoid having to always call RebuildTextArguments()
+		SetUnformattedNodeText(InText);
 		RebuildTextArguments(false);
+	}
+
+	// HEAT: Add SetUnformattedNodeText() to avoid having to always call RebuildTextArguments()
+	// Sets the unformatted text, this is the text that includes the {identifier}
+	// NOTE: This does not call RebuildTextArguments(), use SetText for that
+	void SetUnformattedNodeText(const FText& InText)
+	{
+		Text = InText;
 	}
 
 	void SetNodeData(UDlgNodeData* InNodeData) { NodeData = InNodeData; }

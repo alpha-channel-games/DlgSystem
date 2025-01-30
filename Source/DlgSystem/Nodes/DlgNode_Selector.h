@@ -66,6 +66,14 @@ public:
 	// Sets the Selector Type
 	void SetSelectorType(EDlgNodeSelectorType InType) { SelectorType = InType; }
 
+	// HEAT: Add Custom Identifier for non-GUID identification of Selector Nodes
+	FName GetCustomIdentifier() const { return CustomIdentifier; }
+	void SetCustomIdentifier(FName InCustomIdentifier) { CustomIdentifier = InCustomIdentifier; }
+
+	// HEAT: Allow setting more fields on DlgNode_Selector
+	void SetAvoidPickingSameOptionTwiceInARow(bool InAvoidPickingSameOptionTwiceInARow) { bAvoidPickingSameOptionTwiceInARow = InAvoidPickingSameOptionTwiceInARow; }
+	void SetCycleThroughSatisfiedOptionsWithoutRepetition(bool InCycleThroughSatisfiedOptionsWithoutRepetition) { bCycleThroughSatisfiedOptionsWithoutRepetition = InCycleThroughSatisfiedOptionsWithoutRepetition; }
+
 	// Helper functions to get the names of some properties. Used by the DlgSystemEditor module.
 	static FName GetMemberNameSelectorType() { return GET_MEMBER_NAME_CHECKED(UDlgNode_Selector, SelectorType); }
 	static FName GetMemberNameAvoidPickingSameOptionTwiceInARow() { return GET_MEMBER_NAME_CHECKED(UDlgNode_Selector, bAvoidPickingSameOptionTwiceInARow); }
@@ -76,6 +84,10 @@ protected:
 	int32 GetRandomChildNodeIndex(UDlgContext& Context);
 
 protected:
+	// HEAT: Add Custom Identifier for non-GUID identification of Selector Nodes
+	UPROPERTY()
+	FName CustomIdentifier = NAME_None;
+
 	// Defines the type of selector this node represents
 	UPROPERTY(EditAnywhere, Category = "Dialogue|Node")
 	EDlgNodeSelectorType SelectorType = EDlgNodeSelectorType::First;

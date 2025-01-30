@@ -93,7 +93,8 @@ void FDlgCompilerContext::OrderRootGraphNodes()
 void FDlgCompilerContext::PreCompileGraphNode(UDialogueGraphNode* GraphNode)
 {
 	// Sort connections/children so that they're organized the same as user can see in the editor.
-	GraphNode->SortChildrenBasedOnXLocation();
+	// HEAT: Add a better way of sorting Dialogue Graph Node Children based on Node Index
+	GraphNode->SortChildrenBasedOnNodeIndex();
 	GraphNode->CheckDialogueNodeSyncWithGraphNode();
 	GraphNode->SetNodeDepth(NodeDepth);
 	NodeUnvisitedChildrenNum = 0;

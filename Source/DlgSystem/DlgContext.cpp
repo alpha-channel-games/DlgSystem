@@ -973,13 +973,13 @@ bool UDlgContext::ValidateParticipantsMapForDialogue(
 				ParticipantsMissing.Add(Name.ToString());
 			}
 
+			// HEAT: Change Error to Warning when a Participant is missing
 			const FString NameList = FString::Join(ParticipantsMissing, TEXT(", "));
-			FDlgLogger::Get().Errorf(
-				TEXT("%s - FAILED for Dialogue = `%s` because the following Participant Names are MISSING: `%s"),
+			FDlgLogger::Get().Warningf(
+				TEXT("%s - WARNING for Dialogue = `%s` because the following Participant Names are MISSING: `%s"),
 				*ContextMessage,  *Dialogue->GetPathName(), *NameList
 			);
 		}
-		return false;
 	}
 
 	return true;

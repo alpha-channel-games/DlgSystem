@@ -776,8 +776,9 @@ struct FCompareNodeXLocation
 {
 	FORCEINLINE bool operator()(const TPair<UEdGraphPin*, FDlgEdge>& A, const TPair<UEdGraphPin*, FDlgEdge>& B) const
 	{
-		const UEdGraphNode* NodeA = A.Key->GetOwningNode();
-		const UEdGraphNode* NodeB = B.Key->GetOwningNode();
+		// HEAT: Make this sorting predicate use the positions of the Target Nodes, not the Edge Nodes themselves
+		const UEdGraphNode* NodeA = CastChecked<UDialogueGraphNode_Base>(A.Key->GetOwningNode())->GetDialogue()->GetMutableNodeFromIndex(A.Value.TargetIndex)->GetGraphNode();
+		const UEdGraphNode* NodeB = CastChecked<UDialogueGraphNode_Base>(B.Key->GetOwningNode())->GetDialogue()->GetMutableNodeFromIndex(B.Value.TargetIndex)->GetGraphNode();
 		return NodeA->NodePosX != NodeB->NodePosX ? NodeA->NodePosX < NodeB->NodePosX : NodeA->NodePosY < NodeB->NodePosY;
 	}
 };
@@ -801,7 +802,50 @@ void UDialogueGraphNode::SortChildrenBasedOnXLocation()
 	}
 
 	// Step 2. Sort the synced array
-	SyncedArray.Sort(FCompareNodeXLocation());
+	// HEAT: Make sorting stable, to prevent unexpected re-ordering of Nodes with the same X-location
+	SyncedArray.StableSort(FCompareNodeXLocation());
+
+	// Step 3. Reconstruct the output pins/edges from the sorted synced array
+	OutputPin->LinkedTo.Empty();
+	DialogueNode->RemoveAllChildren();
+	for (const TPair<UEdGraphPin*, FDlgEdge>& SyncedPair : SyncedArray)
+	{
+		OutputPin->LinkedTo.Add(SyncedPair.Key);
+		DialogueNode->AddNodeChild(SyncedPair.Value);
+	}
+}
+
+// HEAT: Add a better way of sorting Dialogue Graph Node Children based on Node Index
+struct FCompareNodeIndex
+{
+	FORCEINLINE bool operator()(const TPair<UEdGraphPin*, FDlgEdge>& A, const TPair<UEdGraphPin*, FDlgEdge>& B) const
+	{
+		return A.Value.TargetIndex < B.Value.TargetIndex;
+	}
+};
+
+// HEAT: Add a better way of sorting Dialogue Graph Node Children based on Node Index
+void UDialogueGraphNode::SortChildrenBasedOnNodeIndex()
+{
+	// Holds an array of synced pairs, each pair corresponds to a linked to output pin and corresponding dialogue edge
+	TArray<TPair<UEdGraphPin*, FDlgEdge>> SyncedArray;
+
+	UEdGraphPin* OutputPin = GetOutputPin();
+	const TArray<UEdGraphPin*> ChildPins = OutputPin->LinkedTo;
+	const TArray<FDlgEdge>& ChildDialogueNodeEdges = DialogueNode->GetNodeChildren();
+	check(ChildPins.Num() == ChildDialogueNodeEdges.Num());
+
+	// Step 1. Construct the synced array
+	const int32 ChildrenNum = ChildPins.Num();
+	SyncedArray.Reserve(ChildrenNum);
+	for (int32 ChildIndex = 0; ChildIndex < ChildrenNum; ChildIndex++)
+	{
+		SyncedArray.Emplace(ChildPins[ChildIndex], ChildDialogueNodeEdges[ChildIndex]);
+	}
+
+	// Step 2. Sort the synced array
+	// HEAT: This is the only line that is different from the SortChildrenBasedOnXLocation() function above
+	SyncedArray.StableSort(FCompareNodeIndex());
 
 	// Step 3. Reconstruct the output pins/edges from the sorted synced array
 	OutputPin->LinkedTo.Empty();

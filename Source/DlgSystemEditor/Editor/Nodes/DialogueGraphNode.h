@@ -362,6 +362,9 @@ public:
 	/** Rearranges the children (edges, output pin, connections) based on the X location on the graph. */
 	void SortChildrenBasedOnXLocation();
 
+	// HEAT: Add a better way of sorting Dialogue Graph Node Children based on Node Index
+	void SortChildrenBasedOnNodeIndex();
+
 	/** Should we force hide this node? */
 	bool GetForceHideNode() const { return bForceHideNode; }
 
