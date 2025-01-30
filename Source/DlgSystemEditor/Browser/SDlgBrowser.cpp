@@ -111,7 +111,7 @@ void SDlgBrowser::Construct(const FArguments& InArgs)
 
 	RootTreeItem = MakeShared<FDialogueBrowserTreeRootNode>();
 	ParticipantsTreeView = SNew(STreeView<TSharedPtr<FDlgBrowserTreeNode>>)
-		.ItemHeight(32)
+		// .ItemHeight(32)
 		.TreeItemsSource(&RootChildren)
 		.OnGenerateRow(this, &Self::HandleGenerateRow)
 		.OnSelectionChanged(this, &Self::HandleTreeSelectionChanged)
@@ -1097,7 +1097,7 @@ TSharedRef<SWidget> SDlgBrowser::MakeButtonWidgetForGraphNodes(
 )
 {
 	TSharedPtr<SWrapBox> Buttons = SNew(SWrapBox)
-			.PreferredWidth(600.f);
+			.PreferredSize(600.f);
 
 	// Constructs [Node 1] [Node 2]
 	const FText GraphNodeTooltip = LOCTEXT("JumpToNodeTipGraphNode", "Opens the Dialogue Editor and jumps to the Node");
