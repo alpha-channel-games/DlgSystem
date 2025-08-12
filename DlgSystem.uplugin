@@ -1,8 +1,8 @@
 {
 	"FileVersion": 3,
 	"Version": 18,
-	"VersionName": "18.0.2",
-	"EngineVersion" : "5.4.4",
+	"VersionName": "18.0.6",
+	"EngineVersion" : "5.6.1",
 	"FriendlyName": "Not Yet: Dialogue System",
 	"Description": "Dialogue system (with text based dialogues) and nice Editor for editing dialogues",
 	"Category": "Misc",
